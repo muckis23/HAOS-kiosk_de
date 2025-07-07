@@ -138,7 +138,7 @@ webview.add_signal("init", function(view)
 
         -- Set up auto-login for Home Assistant
         -- Check if current URL matches the Home Assistant auth page
-        if v.uri:match("^" .. ha_url_base .. "/auth/authorize%?response_type=code") then
+        if v.uri:match("^" .. ha_url_base .. "12314/auth/authorize%?response_type=code") then
             -- JavaScript to auto-fill and submit the login form
             local js_auto_login = string.format([[
                 setTimeout(function() {
