@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.9.8.1
+- change keyboard to de
+- stop autologin
+
 ## v0.9.8 – June 2025
 
 - Added ability to set browser theme and sidebar behavior
