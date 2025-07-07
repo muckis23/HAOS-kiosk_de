@@ -1,5 +1,5 @@
 {
-  "name": "HAOS Kiosk Add-on Repository",
-  "url": "https://github.com/puterboy/HAOS-kiosk",
-  "maintainer": "Jeff Kosowsky"
+  "name": "HAOS Kiosk Add-on Repository with de keyboard",
+  "url": "https://github.com/muckis23/HAOS-kiosk_de.git",
+  "maintainer": "Based on Jeff Kosowsky by Michael Schlueter"
 }
