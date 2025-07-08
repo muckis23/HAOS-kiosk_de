@@ -138,78 +138,78 @@ webview.add_signal("init", function(view)
 
         -- Set up auto-login for Home Assistant
         -- Check if current URL matches the Home Assistant auth page
-        if v.uri:match("^" .. ha_url_base .. "/auth/authorize%?response_type=code") then
-            -- JavaScript to auto-fill and submit the login form
-            local js_auto_login = string.format([[
-                setTimeout(function() {
-                    var usernameField = document.querySelector('input[name="username"]');
-                    var passwordField = document.querySelector('input[name="password"]');
-                    var submitButton = document.querySelector('mwc-button');
-                    if (usernameField && passwordField && submitButton) {
-                        usernameField.value = '%s';
-                        usernameField.dispatchEvent(new Event('input', { bubbles: true }));
-                        passwordField.value = '%s';
-                        passwordField.dispatchEvent(new Event('input', { bubbles: true }));
-                        submitButton.click();
-                    }
-                }, %d);
-            ]], single_quote_escape(username), single_quote_escape(password), login_delay * 1000)
-            v:eval_js(js_auto_login, { source = "auto_login.js" })  -- Execute the login script
-        end
+        -- if v.uri:match("^" .. ha_url_base .. "/auth/authorize%?response_type=code") then
+        --     -- JavaScript to auto-fill and submit the login form
+        --     local js_auto_login = string.format([[
+        --         setTimeout(function() {
+        --             var usernameField = document.querySelector('input[name="username"]');
+        --             var passwordField = document.querySelector('input[name="password"]');
+        --             var submitButton = document.querySelector('mwc-button');
+        --             if (usernameField && passwordField && submitButton) {
+        --                 usernameField.value = '%s';
+        --                 usernameField.dispatchEvent(new Event('input', { bubbles: true }));
+        --                 passwordField.value = '%s';
+        --                 passwordField.dispatchEvent(new Event('input', { bubbles: true }));
+        --                 submitButton.click();
+        --             }
+        --         }, %d);
+        --     ]], single_quote_escape(username), single_quote_escape(password), login_delay * 1000)
+        --     v:eval_js(js_auto_login, { source = "auto_login.js" })  -- Execute the login script
+        -- end
 
         -- Set Home Assistant theme and sidebar visibility after dashboard load
         -- Check if current URL starts with ha_url but not an auth page
-        if not ha_settings_applied
-           and (v.uri .. "/"):match("^" .. ha_url_base .. "/") -- Note ha_url was stripped of trailing slashes
-           and not v.uri:match("^" .. ha_url_base .. "/auth/") then
+--         if not ha_settings_applied
+--            and (v.uri .. "/"):match("^" .. ha_url_base .. "/") -- Note ha_url was stripped of trailing slashes
+--            and not v.uri:match("^" .. ha_url_base .. "/auth/") then
 
-            msg.info("Applying HA settings on dashboard %s: theme=%s, sidebar=%s", v.uri, theme, sidebar) -- DEBUG
+--             msg.info("Applying HA settings on dashboard %s: theme=%s, sidebar=%s", v.uri, theme, sidebar) -- DEBUG
 
-            local js_settings = string.format([[
-                try {
-                    // Set theme and sidebar visibility
-                    let Theme = '%s';
-                    let Sidebar = '%s';
+--             local js_settings = string.format([[
+--                 try {
+--                     // Set theme and sidebar visibility
+--                     let Theme = '%s';
+--                     let Sidebar = '%s';
 
-                    let currentTheme = localStorage.getItem('selectedTheme') || '';
-                    let currentSidebar = localStorage.getItem('dockedSidebar') || '';
-                    let needsReload = false;
+--                     let currentTheme = localStorage.getItem('selectedTheme') || '';
+--                     let currentSidebar = localStorage.getItem('dockedSidebar') || '';
+--                     let needsReload = false;
 
-                    if (Theme !== currentTheme) {
-                        needsReload = true;
-                        if (Theme !== "") {
-                            localStorage.setItem('selectedTheme', Theme);
-                        } else {
-                            localStorage.removeItem('selectedTheme');
-                        }
-                    }
+--                     if (Theme !== currentTheme) {
+--                         needsReload = true;
+--                         if (Theme !== "") {
+--                             localStorage.setItem('selectedTheme', Theme);
+--                         } else {
+--                             localStorage.removeItem('selectedTheme');
+--                         }
+--                     }
 
-                    if (Sidebar !== currentSidebar) {
-                        needsReload = true;
-                        if (Sidebar !== "") {
-                            localStorage.setItem('dockedSidebar', Sidebar);
-                        } else {
-                            localStorage.removeItem('dockedSidebar');
-                        }
-                    }
+--                     if (Sidebar !== currentSidebar) {
+--                         needsReload = true;
+--                         if (Sidebar !== "") {
+--                             localStorage.setItem('dockedSidebar', Sidebar);
+--                         } else {
+--                             localStorage.removeItem('dockedSidebar');
+--                         }
+--                     }
 
-//                  localStorage.setItem('DebugLog', "Setting: Theme: " + currentTheme + " -> " + Theme +
-//                                   " ;Sidebar: " + currentSidebar + " -> " + Sidebar + " [Reload: " + needsReload + "]"); // DEBUG
+-- //                  localStorage.setItem('DebugLog', "Setting: Theme: " + currentTheme + " -> " + Theme +
+-- //                                   " ;Sidebar: " + currentSidebar + " -> " + Sidebar + " [Reload: " + needsReload + "]"); // DEBUG
 
-                    if (needsReload) { // Reload to apply settings
-                        setTimeout(function() {
-                            location.reload();
-                        }, 500);
-                    }
+--                     if (needsReload) { // Reload to apply settings
+--                         setTimeout(function() {
+--                             location.reload();
+--                         }, 500);
+--                     }
 
-                } catch (err) {
-                    localStorage.setItem('DebugLog', "FAILED to set: Theme: " + Theme + " ;Sidebar: " + Sidebar); // DEBUG
-                }
-            ]], single_quote_escape(theme), single_quote_escape(sidebar))
+--                 } catch (err) {
+--                     localStorage.setItem('DebugLog', "FAILED to set: Theme: " + Theme + " ;Sidebar: " + Sidebar); // DEBUG
+--                 }
+--             ]], single_quote_escape(theme), single_quote_escape(sidebar))
 
-            v:eval_js(js_settings, { source = "ha_settings.js" })
-            ha_settings_applied = true
-        end
+--             v:eval_js(js_settings, { source = "ha_settings.js" })
+--             ha_settings_applied = true
+--         end
 
         -- Set up periodic page refresh if browser_interval is positive
         if browser_refresh > 0 then
