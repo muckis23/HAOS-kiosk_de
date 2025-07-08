@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.9.8.2
+- deactivate autologin functions
+
 ## v0.9.8.1
 - change keyboard to de
 - stop autologin
